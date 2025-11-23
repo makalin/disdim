@@ -64,8 +64,6 @@ Not all monitors / adapters support DDC/CI — when they don’t, disdim falls b
 
 ## Installation
 
-> **Note:** For now, disdim is source-only. Binary releases are planned.
-
 1. Clone the repo:
 
 ```bash
@@ -73,16 +71,23 @@ git clone https://github.com/makalin/disdim.git
 cd disdim
 ```
 
-2. Open in Xcode:
+2. Build the project:
 
 ```bash
-open disdim.xcodeproj
+# Build the App Bundle (disdim.app)
+./bundle.sh
+
+# Or build binaries manually
+swift build -c release
 ```
 
-3. Set the signing team (if needed)
-4. Build & run the **disdim** target
+3. Run the app:
 
-disdim will appear as an icon in the menu bar.
+```bash
+open disdim.app
+```
+
+The app will appear in the menu bar.
 
 ---
 
@@ -90,26 +95,32 @@ disdim will appear as an icon in the menu bar.
 
 ### Menu bar
 
-Click the **disdim** icon in the menu bar to open the menu:
+Click the **disdim** icon in the menu bar to:
+* **Sleep Displays**: Immediately sleep all displays.
+* **External Displays**: Toggle external monitors On/Off (DDC/CI).
+* **Quit disdim**: Exit the application.
 
-* **Sleep Displays**
-  → runs `pmset displaysleepnow`
-* **External Displays → Off / On** (planned)
-  → sends DDC/CI power commands to selected monitors
-* **Preferences** (planned)
+### Global Shortcuts
 
-  * Configure shortcuts
-  * Enable / disable DDC per display
-* **Quit disdim**
+* **⌥⌘D** (Option+Command+D): Sleep all displays.
+* **⌥⌘E** (Option+Command+E): Turn OFF external displays.
 
-### From Terminal (optional helper)
+### CLI (disdimc)
 
-If you use the bundled tiny helper CLI:
+You can use the command-line tool to control displays from the terminal:
 
 ```bash
-disdimc sleep        # same as pmset displaysleepnow
-disdimc off 1        # turn off external display #1 (DDC)
-disdimc on 1         # turn on external display #1 (DDC)
+# Sleep all displays
+.build/release/disdimc sleep
+
+# List connected displays
+.build/release/disdimc list
+
+# Turn off external display at index 0
+.build/release/disdimc off 0
+
+# Turn on external display at index 0
+.build/release/disdimc on 0
 ```
 
 ---
@@ -131,9 +142,9 @@ disdimc on 1         # turn on external display #1 (DDC)
 
 ## Roadmap
 
-* [ ] Per-display DDC/CI power control
-* [ ] Automatic detection of DDC-capable monitors
-* [ ] Customizable global shortcuts
+* [x] Per-display DDC/CI power control
+* [x] Automatic detection of DDC-capable monitors
+* [x] Customizable global shortcuts (Hardcoded to Opt+Cmd+D/E for now)
 * [ ] Per-app rules (e.g. “don’t sleep while in full screen”)
 * [ ] Signed & notarized universal binary releases
 
